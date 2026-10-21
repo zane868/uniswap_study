@@ -144,3 +144,37 @@ y = 10000 / x ≈ 1414.213562 USDT
 ```
 
 平衡点由实际交易形成；外部价格变化本身不会自动改变池子的储备或报价
+
+
+##  Uniswap V2 Core 和 Periphery 合约，整理一份核心接口文档。
+
+### 资金池相关
+#### 创建资金池
+- IUniswapV2Factory.createPair
+
+#### 添加流动性
+- UniswapV2Router02.addLiquidity -> IUniswapV2Pair.Mint
+- UniswapV2Router02.addLiquidityETH -> IUniswapV2Pair.Mint
+
+#### 移除流动性
+v2版本在移除的时候会把收益份额算在里面
+
+##### 普通版
+- UniswapV2Router02.removeLiquidity -> IUniswapV2Pair.Burn
+- UniswapV2Router02.removeLiquidityETH -> IUniswapV2Pair.Burn
+##### 扣费版
+- UniswapV2Router02.removeLiquidityETHSupportingFeeOnTransferTokens -> IUniswapV2Pair.Burn
+##### 签名扣费
+- UniswapV2Router02.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens -> IUniswapV2Pair.Burn
+
+### 兑换相关
+
+#### 兑换前的计算
+- UniswapV2Router02.quote
+- UniswapV2Router02.getAmountOut
+- UniswapV2Router02.getAmountIn
+
+#### 实际兑换
+- UniswapV2Router02.swapExactTokensForTokens -> IUniswapV2Pair.swap
+- UniswapV2Router02.swapExactETHForTokens -> IUniswapV2Pair.swap
+- UniswapV2Router02.swapExactTokensForETH -> IUniswapV2Pair.swap
